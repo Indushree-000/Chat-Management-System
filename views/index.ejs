@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Whatsaap</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>All Chats</h2>
+    <form method="GET" action="/chats/new">
+        <button id="btn">Create New Chat</button><br><br>
+    </form>
+        <% for(let chat of chats){ %>
+            <div class="chat">
+                <p>From: <i> <%= chat.from %> </i></p>
+                <div class="msg">
+                    <p>  <%= chat.msg %>  </p>
+                    <form method="GET" action="/chats/<%= chat._id %>/edit">
+                        <button>Edit Chat</button>
+                    </form><br>
+                    <form method="POST" action="/chats/<%= chat._id %>?_method=DELETE" 
+                          onsubmit="return confirm('Delete this chat from <%= chat.from %>? This action cannot be undone.');">
+                        <button>Delete</button>
+                    </form>
+                </div>
+                <p>Received By <i> <%= chat.to %> </i></p>
+                <hr/>
+                <!-- <p>Received at: <%= chat.created_at.toString().split(" ")[4] %> </p>
+                <p>Received on: <%= chat.created_at.toString().split(" ").slice(0,4).join("-") %> </p> -->
+                
+                <% if (chat.updated_at && chat.updated_at.getTime() > chat.created_at.getTime()) { %>
+                    <p>Updated at: <%= chat.updated_at.toString().split(" ")[4] %></p>
+                    <p>Updated on: <%= chat.updated_at.toString().split(" ").slice(0,4).join("-") %></p>
+                <% } else { %>
+                    <p>Received at: <%= chat.created_at.toString().split(" ")[4] %></p>
+                    <p>Received on: <%= chat.created_at.toString().split(" ").slice(0,4).join("-") %></p>
+                <% } %>
+
+            </div>
+            <br><br>
+        <% } %>
+</body>
+</html>
